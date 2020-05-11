@@ -1,21 +1,38 @@
 import Tele
 import yaml
+import io
 
 with open('names1.yml', 'r') as date_b:
-    dict_names = yaml.load(date_b)
+    dict_id, dict_names = yaml.load(date_b)
 
 
 @Tele.bot(chat_id=-1001053283203, filters='document')
 def message(update):
-    dict_names[update['document']['file_name'].split('.')[1].replace('פופקורן טיים ', '')] =\
-        update['document']['file_id']
-    Tele.send_document(-1001298973820, update['document']['file_id'])
+    if update['document']['file_unique_id'] not in dict_id:
+        dict_names[update['document']['file_name'].split('.')[1].replace('פופקורן טיים ', '')] =\
+            update['document']['file_id']
+        Tele.send_document(-1001298973820,
+                           update['document']['file_id'],
+                           caption=update['document']['file_name'].split('.')[1].replace('פופקורן טיים ', ''))
+    with io.open('names1.yml', 'w', encoding='utf8') as outfile:
+        yaml.dump([dict_names, dict_id], outfile)
 
 
-@Tele.bot(chat_id=-1001298973820, filters='document')
+@Tele.bot(chat_id=694895985, filters='caption')
 def message(update):
-    dict_names[update['document']['file_name'].split('.')[1].replace('פופקורן טיים ', '')] =\
-        update['document']['file_id']
+    if update['document']['file_unique_id'] in dict_id:
+        del dict_names[dict_id[update['document']['file_unique_id']]]
+        dict_names[update['caption']] =\
+            update['document']['file_id']
+        dict_id[update['document']['file_unique_id']] =\
+            update['caption']
+    else:
+        dict_names[update['caption']] =\
+            update['document']['file_id']
+        dict_id[update['document']['file_unique_id']] =\
+            update['caption']
+    with io.open('names1.yml', 'w', encoding='utf8') as outfile:
+        yaml.dump([dict_names, dict_id], outfile)
 
 
 @Tele.bot('text')
