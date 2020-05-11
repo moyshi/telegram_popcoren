@@ -55,22 +55,26 @@ def message(update):
         else:
             h = n
         if h in text:
-            list_t.append(n)
+            for mmil in text.split():
+                if mmil in h:
+                    list_t.append(n)
     if len(list_t) == 1:
         Tele.send_document(update['chat']['id'], dict_names[list_t[0]], reply_to_message_id=str(update['message_id']))
     elif len(list_t) > 1:
         list_ms = []
         for t_n in list_t:
-            list_ms.append([{t_n: t_n + '#1#' + str(update['message_id'])}])
+            list_ms.append([{t_n: t_n + '#1#' + str(update['message_id']) + '#1#' + str(update['from']['id'])}])
         update.reply(text='מצאתי לך כמה סרטים בשם הזה אנא בחר',
                      reply_markup=Tele.InlineKeyboard(list_ms))
 
 
 @Tele.bot('data')
 def data(update):
-    Tele.send_document(update['message']['chat']['id'],
-                       dict_names[update['data'].split('#1#')[0]],
-                       reply_to_message_id=update['data'].split('#1#')[1])
+    if str(update['from']['id']) == update['data'].split('#1#')[2]:
+        Tele.send_document(update['message']['chat']['id'],
+                           dict_names[update['data'].split('#1#')[0]],
+                           reply_to_message_id=update['data'].split('#1#')[1])
+        Tele.delete_message(update['message']['chat']['id'], update['message']['message_id'])
 
 
 Tele.account('1088772965:AAGqPf0I78OxDH8bvqZ9eERmm-8mlxVJk-Q')
