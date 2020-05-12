@@ -58,6 +58,7 @@ def message(update):
             for mmil in text.split():
                 if mmil in h:
                     list_t.append(n)
+                    break
     if len(list_t) == 1:
         Tele.send_document(update['chat']['id'], dict_names[list_t[0]], reply_to_message_id=str(update['message_id']))
     elif len(list_t) > 1:
