@@ -55,6 +55,7 @@ def message(update):
         else:
             h = n
         if h in text:
+            print(1)
             for mmil in text.split():
                 if mmil in h:
                     list_t.append(n)
