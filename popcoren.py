@@ -3,13 +3,13 @@ import yaml
 import io
 
 with open('names1.yml', 'r') as date_b:
-    dict_id, dict_names = yaml.load(date_b)
+    dict_names, dict_id = yaml.load(date_b)
 
 
 @Tele.bot(chat_id=-1001053283203, filters='document')
 def message(update):
     if update['document']['file_unique_id'] not in dict_id:
-        dict_names[update['document']['file_name'].split('.')[1].replace('פופקורן טיים ', '')] =\
+        dict_names[update['document']['file_name'].split('.')[0].replace('פופקורן טיים ', '')] =\
             update['document']['file_id']
         Tele.send_document(-1001298973820,
                            update['document']['file_id'],
