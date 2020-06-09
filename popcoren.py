@@ -41,17 +41,19 @@ def message(update):
     list_t = []
     for n in dict_names:
         if 10 > len(n) > 6:
-            h = n[:-len(n) // 4:]
+            h = n[:-len(n) // 5:]
         elif 14 > len(n) > 9:
-            h = n[:-len(n) // 3:]
+            h = n[:-len(n) // 4:]
         elif 17 > len(n) > 13:
-            h = n[:-len(n) // 2:]
+            h = n[:-len(n) // 3:]
         elif 20 > len(n) > 16:
-            h = n[:-len(n) // 2 - 2:]
+            h = n[:-len(n) // 2:]
         elif 24 > len(n) > 19:
+            h = n[:-len(n) // 2 - 2:]
+        elif 28 > len(n) > 23:
             h = n[:-len(n) // 2 - 4:]
-        elif len(n) > 23:
-            h = n[:-len(n) // 2 - 6:]
+        elif len(n) > 27:
+            h = n[:-len(n) // 2 - 4:]
         else:
             h = n
         if h in text:
